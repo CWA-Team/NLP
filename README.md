@@ -6,8 +6,6 @@ A comprehensive system for detecting and reducing social biases in Large Languag
 
 ### Core Functionality
 - **Multi-Provider LLM Support**: Works with OpenAI (GPT-3.5, GPT-4) and Google Gemini
-- **3 Bias Categories**: Religion, Socioeconomic Status, and Gender
-- **50 Manual Prompts**: Carefully crafted test prompts covering all bias categories
 - **4 Debiasing Methods**:
   - Baseline (no debiasing)
   - Self-Debiasing via Explanation (from base paper)
