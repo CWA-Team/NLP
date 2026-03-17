@@ -1,0 +1,234 @@
+Model,Context Window,Creator,Intelligence Index,Price (Blended USD/1M Tokens),Speed(median token/s),Latency (First Answer Chunk /s)
+GPT-5.2 (xhigh),400k,OpenAI,51,$4.81 ,100,44.29
+Claude Opus 4.5,200k,Anthropic,49,$10.00 ,79,1.7
+Gemini 3 Pro Preview (high),1m,Google,48,$4.50 ,128,32.19
+GPT-5.1 (high),400k,OpenAI,47,$3.44 ,127,26.5
+Gemini 3 Flash,1m,Google,46,$1.13 ,224,11.62
+GPT-5.2 (medium),400k,OpenAI,45,$4.81 ,0,0.0
+Claude Opus 4.5,200k,Anthropic,43,$10.00 ,72,1.96
+Claude 4.5 Sonnet,1m,Anthropic,42,$6.00 ,80,1.6
+GLM-4.7,200k,Z AI,42,$0.94 ,78,0.61
+GPT-5.1 Codex (high),400k,OpenAI,42,$3.44 ,190,17.8
+Grok 4,256k,xAI,41,$6.00 ,36,6.34
+DeepSeek V3.2,128k,DeepSeek,41,$0.32 ,31,1.41
+o3,200k,OpenAI,"41
+E",$3.50 ,264,12.44
+GPT-5 mini (high),400k,OpenAI,41,$0.69 ,72,113.01
+Gemini 3 Pro Preview (low),1m,Google,41,$4.50 ,133,4.04
+Kimi K2 Thinking,256k,Kimi,40,$1.07 ,84,0.62
+MiniMax-M2.1,205k,MiniMax,39,$0.53 ,71,1.79
+MiMo-V2-Flash,256k,Xiaomi,39,$0.15 ,112,1.67
+Grok 4.1 Fast,2m,xAI,38,$0.28 ,150,6.15
+GPT-5.1 Codex mini (high),400k,OpenAI,38,$0.69 ,174,8.53
+Claude 4.5 Sonnet,1m,Anthropic,37,$6.00 ,72,1.51
+Claude 4.5 Haiku,200k,Anthropic,37,$2.00 ,116,0.46
+KAT-Coder-Pro V1,256k,KwaiKAT,36,$0.00 ,62,1.09
+MiniMax-M2,205k,MiniMax,36,$0.53 ,108,1.28
+Nova 2.0 Pro Preview (medium),256k,Amazon,35,$3.44 ,133,21.03
+Gemini 3 Flash,1m,Google,35,$1.13 ,196,0.74
+Grok 4 Fast,2m,xAI,35,$0.28 ,179,4.11
+Gemini 2.5 Pro,1m,Google,34,$3.44 ,160,32.99
+DeepSeek V3.2 Speciale,128k,DeepSeek,"34
+E",$0.42 ,0,0.0
+GLM-4.7,200k,Z AI,34,$0.94 ,75,0.64
+DeepSeek V3.1 Terminus,128k,DeepSeek,33,$0.80 ,0,0.0
+Doubao Seed Code,256k,ByteDance Seed,33,$0.41 ,0,0.0
+GPT-5.2,400k,OpenAI,33,$4.81 ,74,0.53
+gpt-oss-120B (high),131k,OpenAI,33,$0.26 ,366,0.41
+Qwen3 Max Thinking,262k,Alibaba,32,$2.40 ,35,1.74
+Grok 3 mini Reasoning (high),1m,xAI,32,$0.35 ,192,0.7
+Nova 2.0 Pro Preview (low),256k,Amazon,32,$3.44 ,134,12.47
+K-EXAONE,256k,LG AI Research,32,$0.00 ,114,0.31
+DeepSeek V3.2,128k,DeepSeek,32,$0.32 ,30,1.24
+Qwen3 Max,262k,Alibaba,31,$2.40 ,26,1.85
+Claude 4.5 Haiku,200k,Anthropic,30,$2.00 ,106,0.42
+MiMo-V2-Flash,256k,Xiaomi,30,$0.15 ,90,1.74
+Nova 2.0 Lite (medium),1m,Amazon,30,$0.85 ,254,15.06
+Qwen3 235B A22B 2507,256k,Alibaba,29,$2.63 ,83,1.22
+ERNIE 5.0 Thinking Preview,128k,Baidu,29,$1.47 ,0,0.0
+Qwen3 VL 32B,256k,Alibaba,"29
+E",$2.63 ,48,1.07
+DeepSeek V3.1 Terminus,128k,DeepSeek,28,$0.80 ,0,0.0
+Nova 2.0 Omni (medium),1m,Amazon,28,$0.85 ,0,0.0
+Kimi K2 0905,256k,Kimi,28,$1.20 ,52,0.57
+Apriel-v1.6-15B-Thinker,128k,ServiceNow,28,$0.00 ,148,0.28
+Qwen3 VL 235B A22B,262k,Alibaba,27,$2.63 ,43,1.11
+Magistral Medium 1.2,128k,Mistral,27,$2.75 ,36,0.48
+DeepSeek R1 0528,128k,DeepSeek,27,$2.36 ,0,0.0
+GPT-5 nano (high),400k,OpenAI,27,$0.14 ,119,111.22
+Qwen3 Next 80B A3B,262k,Alibaba,27,$1.88 ,177,1.07
+Grok Code Fast 1,256k,xAI,"26
+E",$0.53 ,209,8.78
+Nova 2.0 Lite (low),1m,Amazon,25,$0.85 ,237,7.34
+Qwen3 Coder 480B,262k,Alibaba,25,$3.00 ,48,1.72
+gpt-oss-20B (high),131k,OpenAI,25,$0.10 ,254,0.47
+NVIDIA Nemotron 3 Nano,1m,NVIDIA,25,$0.10 ,177,0.31
+Qwen3 235B 2507,256k,Alibaba,24,$1.23 ,40,1.08
+HyperCLOVA X SEED Think (32B),128k,Naver,24,$0.00 ,0,0.0
+Motif-2-12.7B,128k,Motif Technologies,"24
+E",$0.00 ,0,0.0
+Nova 2.0 Omni (low),1m,Amazon,24,$0.85 ,0,0.0
+gpt-oss-120B (low),131k,OpenAI,24,$0.26 ,307,0.46
+GLM-4.6V,128k,Z AI,24,$0.45 ,54,0.7
+Grok 4.1 Fast,2m,xAI,23,$0.28 ,130,0.84
+GLM-4.5-Air,128k,Z AI,23,$0.42 ,97,0.56
+Mi:dm K 2.5 Pro,128k,Korea Telecom,23,$0.00 ,0,0.0
+K-EXAONE,256k,LG AI Research,23,$0.00 ,106,0.31
+Nova 2.0 Pro Preview,256k,Amazon,23,$3.44 ,163,0.48
+Qwen3 4B 2507,262k,Alibaba,"23
+E",$0.00 ,0,0.0
+Grok 4 Fast,2m,xAI,23,$0.28 ,142,0.58
+Qwen3 30B A3B 2507,262k,Alibaba,23,$0.75 ,161,0.99
+Magistral Small 1.2,128k,Mistral,"23
+E",$0.75 ,205,0.33
+Mistral Large 3,256k,Mistral,22,$0.75 ,49,0.52
+INTELLECT-3,131k,Prime Intellect,22,$0.42 ,85,0.57
+Gemini 2.5 Flash-Lite (Sep),1m,Google,22,$0.17 ,550,4.22
+Devstral 2,256k,Mistral,22,$0.00 ,51,0.45
+Hermes 4 405B,128k,Nous Research,"22
+E",$1.50 ,34,0.81
+Mistral Medium 3.1,128k,Mistral,21,$0.80 ,98,0.4
+gpt-oss-20B (low),131k,OpenAI,21,$0.10 ,252,0.55
+K2-V2 (high),512k,MBZUAI Institute of Foundation Models,21,$0.00 ,0,0.0
+Qwen3 VL 235B A22B,262k,Alibaba,21,$1.23 ,35,1.08
+Ring-flash-2.0,128k,InclusionAI,"21
+E",$0.25 ,80,1.4
+Hermes 4 70B,128k,Nous Research,"20
+E",$0.20 ,81,0.6
+Qwen3 Next 80B A3B,262k,Alibaba,20,$0.88 ,170,1.13
+Llama Nemotron Ultra,128k,NVIDIA,"20
+E",$0.90 ,38,0.72
+Qwen3 Coder 30B A3B,262k,Alibaba,20,$0.90 ,99,1.48
+Ling-flash-2.0,128k,InclusionAI,"20
+E",$0.25 ,56,1.5
+Gemini 2.5 Flash-Lite (Sep),1m,Google,20,$0.17 ,429,0.33
+Qwen3 VL 30B A3B,256k,Alibaba,20,$0.75 ,103,0.91
+Ling-1T,128k,InclusionAI,19,$0.00 ,0,0.0
+Devstral Small 2,256k,Mistral,19,$0.00 ,197,0.35
+Llama Nemotron Super 49B v1.5,128k,NVIDIA,19,$0.17 ,77,0.22
+Nova Premier,1m,Amazon,19,$5.00 ,80,0.8
+K2-V2 (medium),512k,MBZUAI Institute of Foundation Models,19,$0.00 ,0,0.0
+Devstral Medium,256k,Mistral,19,$0.80 ,112,0.43
+Llama 4 Maverick,1m,Meta,19,$0.46 ,136,0.46
+Llama 3.3 Nemotron Super 49B,128k,NVIDIA,"18
+E",$0.00 ,0,0.0
+Nova 2.0 Lite,1m,Amazon,18,$0.85 ,222,0.52
+GLM-4.6V,128k,Z AI,17,$0.45 ,64,0.89
+ERNIE 4.5 300B A47B,131k,Baidu,"17
+E",$0.48 ,27,1.88
+Hermes 4 405B,128k,Nous Research,"17
+E",$1.50 ,31,0.72
+Qwen3 VL 32B,256k,Alibaba,17,$1.23 ,46,0.96
+EXAONE 4.0 32B,131k,LG AI Research,17,$0.70 ,101,0.31
+Nova 2.0 Omni,1m,Amazon,17,$0.85 ,226,0.71
+Qwen3 VL 8B,256k,Alibaba,17,$0.66 ,65,0.95
+Olmo 3 7B Think,66k,Allen Institute for AI,"17
+E",$0.14 ,107,0.52
+DeepSeek R1 0528 Qwen3 8B,33k,DeepSeek,"16
+E",$0.07 ,68,1.18
+Qwen3 VL 30B A3B,256k,Alibaba,16,$0.35 ,98,0.91
+Ministral 14B (Dec '25),256k,Mistral,16,$0.20 ,144,0.3
+Qwen3 4B 2507,262k,Alibaba,"16
+E",$0.00 ,0,0.0
+Falcon-H1R-7B,256k,TII UAE,16,$0.00 ,0,0.0
+DeepSeek R1 Distill Llama 70B,128k,DeepSeek,"16
+E",$0.88 ,42,0.82
+Qwen3 Omni 30B A3B,66k,Alibaba,16,$0.43 ,97,0.95
+Devstral Small,256k,Mistral,15,$0.15 ,228,0.36
+Solar Pro 2,66k,Upstage,15,$0.00 ,0,0.0
+Qwen3 30B A3B 2507,262k,Alibaba,15,$0.35 ,76,1.02
+NVIDIA Nemotron Nano 9B V2,131k,NVIDIA,15,$0.07 ,100,0.23
+Llama Nemotron Super 49B v1.5,128k,NVIDIA,15,$0.17 ,69,0.22
+Ling-mini-2.0,131k,InclusionAI,"15
+E",$0.12 ,182,1.49
+K2-V2 (low),512k,MBZUAI Institute of Foundation Models,15,$0.00 ,0,0.0
+Mistral Small 3.2,128k,Mistral,15,$0.15 ,96,0.3
+Qwen3 VL 4B,256k,Alibaba,"15
+E",$0.00 ,0,0.0
+Ministral 8B (Dec '25),256k,Mistral,15,$0.15 ,194,0.28
+Llama 3.3 70B,128k,Meta,15,$0.64 ,107,0.47
+NVIDIA Nemotron Nano 12B v2 VL,128k,NVIDIA,15,$0.30 ,129,0.21
+Qwen3 VL 8B,256k,Alibaba,15,$0.31 ,110,0.9
+Llama 3.1 Nemotron Nano 4B v1.1,128k,NVIDIA,"14
+E",$0.00 ,0,0.0
+Kimi Linear 48B A3B Instruct,1m,Kimi,"14
+E",$0.00 ,0,0.0
+Reka Flash 3,128k,Reka AI,"14
+E",$0.35 ,49,1.3
+Llama 3.3 Nemotron Super 49B,128k,NVIDIA,"14
+E",$0.00 ,0,0.0
+Llama 3.1 405B,128k,Meta,14,$4.19 ,25,0.68
+Qwen3 VL 4B,256k,Alibaba,"14
+E",$0.00 ,0,0.0
+Solar Pro 2,66k,Upstage,14,$0.00 ,0,0.0
+Llama 4 Scout,10m,Meta,14,$0.28 ,117,0.42
+Llama 3.1 Nemotron 70B,128k,NVIDIA,14,$1.20 ,40,0.28
+Hermes 4 70B,128k,Nous Research,"14
+E",$0.20 ,72,0.57
+NVIDIA Nemotron 3 Nano,1m,NVIDIA,14,$0.10 ,171,0.32
+Command A,256k,Cohere,13,$4.38 ,58,0.3
+NVIDIA Nemotron Nano 9B V2,131k,NVIDIA,13,$0.10 ,109,0.41
+Phi-4,16k,Microsoft Azure,"13
+E",$0.22 ,7,0.76
+Qwen3 1.7B,32k,Alibaba,"13
+E",$0.40 ,126,0.9
+Jamba Reasoning 3B,262k,AI21 Labs,"13
+E",$0.00 ,0,0.0
+R1 1776,128k,Perplexity,"12
+E",$0.00 ,0,0.0
+Llama 3.2 90B (Vision),128k,Meta,"12
+E",$0.72 ,41,0.33
+Ministral 3B (Dec '25),256k,Mistral,12,$0.10 ,298,0.27
+EXAONE 4.0 32B,131k,LG AI Research,12,$0.70 ,87,0.31
+Nova Micro,130k,Amazon,"12
+E",$0.06 ,462,0.36
+LFM2 8B A1B,33k,Liquid AI,"11
+E",$0.00 ,0,0.0
+Granite 4.0 H Small,128k,IBM,11,$0.11 ,239,8.74
+Granite 4.0 Micro,128k,IBM,"11
+E",$0.00 ,0,0.0
+Phi-4 Mini,128k,Microsoft Azure,"11
+E",$0.00 ,45,0.31
+DeepHermes 3 - Mistral 24B,32k,Nous Research,"11
+E",$0.00 ,0,0.0
+Llama 3.2 11B (Vision),128k,Meta,"11
+E",$0.16 ,71,0.38
+Qwen3 Omni 30B A3B,66k,Alibaba,11,$0.43 ,89,0.94
+Qwen3 0.6B,32k,Alibaba,"11
+E",$0.40 ,200,0.89
+Gemma 3 27B,128k,Google,10,$0.00 ,42,3.66
+NVIDIA Nemotron Nano 12B v2 VL,128k,NVIDIA,10,$0.30 ,126,0.55
+Phi-4 Multimodal,128k,Microsoft Azure,"10
+E",$0.00 ,17,0.32
+Gemma 3n E2B,32k,Google,"10
+E",$0.00 ,41,0.37
+Jamba 1.7 Large,256k,AI21 Labs,9,$3.50 ,47,0.84
+Molmo 7B-D,4k,Allen Institute for AI,"9
+E",$0.00 ,0,0.0
+Gemma 3 12B,128k,Google,9,$0.00 ,40,20.1
+Gemma 3 1B,32k,Google,"9
+E",$0.00 ,37,0.51
+Exaone 4.0 1.2B,64k,LG AI Research,8,$0.00 ,0,0.0
+Gemma 3 270M,32k,Google,"8
+E",$0.00 ,0,0.0
+Exaone 4.0 1.2B,64k,LG AI Research,8,$0.00 ,0,0.0
+Granite 4.0 H 1B,128k,IBM,8,$0.00 ,0,0.0
+Olmo 3 7B,66k,Allen Institute for AI,8,$0.13 ,33,0.43
+LFM2 2.6B,33k,Liquid AI,8,$0.00 ,0,0.0
+DeepHermes 3 - Llama-3.1 8B,128k,Nous Research,"8
+E",$0.00 ,0,0.0
+Jamba 1.7 Mini,258k,AI21 Labs,7,$0.25 ,124,0.63
+Granite 4.0 1B,128k,IBM,7,$0.00 ,0,0.0
+Granite 4.0 350M,33k,IBM,7,$0.00 ,0,0.0
+Qwen3 1.7B,32k,Alibaba,7,$0.19 ,116,0.9
+LFM2 1.2B,33k,Liquid AI,6,$0.00 ,0,0.0
+Gemma 3 4B,128k,Google,6,$0.00 ,40,0.94
+Gemma 3n E4B,32k,Google,6,$0.03 ,59,0.38
+Qwen3 0.6B,32k,Alibaba,6,$0.19 ,188,0.89
+Granite 4.0 H 350M,33k,IBM,6,$0.00 ,0,0.0
+DeepSeek-OCR,8k,DeepSeek,--,$0.05 ,322,0.41
+Grok Voice Agent,32k,xAI,--,$0.00 ,0,0.0
+Olmo 3.1 32B Think,66k,Allen Institute for AI,--,$0.00 ,60,0.54
+Cogito v2.1,128k,Deep Cogito,--,$1.25 ,74,0.38
+Mi:dm K 2.5 Pro Preview,128k,Korea Telecom,--,$0.00 ,0,0.0
+Doubao-Seed-1.8,256k,ByteDance Seed,--,$0.15 ,0,0.0

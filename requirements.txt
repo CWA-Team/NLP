@@ -1,0 +1,28 @@
+# Bias Detection and Debiasing System
+# Requirements file
+
+# Core dependencies
+openai>=1.0.0
+google-generativeai>=0.3.0
+
+# Web framework
+flask>=2.3.0
+
+# Authentication
+flask-login>=0.6.0
+werkzeug>=2.3.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+numpy>=1.24.0
+
+# Database
+psycopg2-binary>=2.9.0
+sqlalchemy>=2.0.0
+
+# Other utilities
+python-dotenv>=1.0.0
+
+# Optional: for better JSON handling
+orjson>=3.9.0

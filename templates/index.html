@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bias Detection & Debiasing System</title>
+    <style>
+        :root {
+            --color-bg: #0d1117;
+            --color-bg-secondary: #161b22;
+            --color-border: #30363d;
+            --color-text-primary: #c9d1d9;
+            --color-text-secondary: #8b949e;
+            --color-accent: #58a6ff;
+            --color-success: #238636;
+            --color-success-hover: #2ea043;
+            --color-danger: #da3633;
+            --color-btn-primary: #238636;
+            --color-btn-secondary: #21262d;
+            --color-btn-hover: #30363d;
+            --color-link: #58a6ff;
+            --color-warning: #d29922;
+            --color-purple: #8957e5;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--color-text-primary);
+        }
+        
+        header p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+        }
+        
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+        }
+        
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        .header-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+        }
+        
+        .btn-primary {
+            background: var(--color-btn-primary);
+            color: white;
+            border-color: rgba(240, 246, 252, 0.1);
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-success-hover);
+        }
+        
+        .btn-secondary {
+            background: var(--color-btn-secondary);
+            color: var(--color-text-primary);
+            border-color: var(--color-border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--color-btn-hover);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--color-accent);
+            border: 1px solid var(--color-border);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(56, 139, 253, 0.1);
+        }
+        
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #f85149;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .card {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .card h2 {
+            color: var(--color-text-primary);
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        
+        .form-group { margin-bottom: 16px; }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 14px;
+        }
+        
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--color-bg);
+            color: var(--color-text-primary);
+            transition: border-color 0.2s;
+        }
+        
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 12px; }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .checkbox-item:hover {
+            border-color: var(--color-accent);
+        }
+        
+        .checkbox-item input {
+            width: auto;
+            accent-color: var(--color-accent);
+        }
+        
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 400;
+        }
+        
+        .btn-full {
+            width: 100%;
+            padding: 12px 24px;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin-top: 16px; }
+        
+        .stat-card {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 16px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-card .value {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--color-accent);
+        }
+        
+        .stat-card .label {
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+            font-size: 0.875rem;
+        }
+        
+        .results-section { margin-top: 24px; }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 2em;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 20px;
+        }
+        
+        .badge-success { background: rgba(35, 134, 54, 0.4); color: #3fb950; }
+        .badge-primary { background: rgba(56, 139, 253, 0.4); color: #58a6ff; }
+        .badge-warning { background: rgba(187, 128, 9, 0.4); color: #d29922; }
+        .badge-danger { background: rgba(218, 54, 51, 0.4); color: #f85149; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--color-border); }
+        
+        th {
+            background: var(--color-bg);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-secondary);
+        }
+        
+        tr:hover td { background: rgba(177, 186, 196, 0.08); }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--color-bg);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--color-accent);
+            transition: width 0.3s;
+        }
+        
+        .method-card {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .method-card h4 {
+            color: var(--color-accent);
+            margin-bottom: 12px;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--color-border); }
+        .result-row:last-child { border-bottom: none; }
+        .result-row span { color: var(--color-text-secondary); }
+        .result-row strong { color: var(--color-text-primary); }
+        
+        .loading { text-align: center; padding: 40px; }
+        
+        .spinner {
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: 24px;
+            gap: 4px;
+        }
+        
+        .nav-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            border-radius: 6px 6px 0 0;
+            transition: 0.2s;
+        }
+        
+        .nav-tab:hover {
+            color: var(--color-text-primary);
+            background: rgba(177, 186, 196, 0.08);
+        }
+        
+        .nav-tab.active {
+            color: var(--color-text-primary);
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-bg-secondary);
+            margin-bottom: -1px;
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .flash-messages { margin-bottom: 20px; }
+        
+        .flash {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            border: 1px solid transparent;
+        }
+        
+        .flash.error {
+            background: rgba(218, 54, 51, 0.1);
+            color: #f85149;
+            border-color: rgba(218, 54, 51, 0.4);
+        }
+        
+        .flash.success {
+            background: rgba(35, 134, 54, 0.1);
+            color: #3fb950;
+            border-color: rgba(35, 134, 54, 0.4);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--color-text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .header-bar { flex-direction: column; gap: 16px; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-bar">
+                <div class="header-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                    Bias Detection
+                </div>
+                <div class="header-actions">
+                    {% if current_user.is_authenticated %}
+                    <span style="color: var(--color-text-secondary); padding: 8px 12px;">{{ current_user.username }}</span>
+                    <a href="/profile" class="btn btn-secondary">Profile</a>
+                    <a href="/logout" class="btn btn-danger">Logout</a>
+                    {% else %}
+                    <a href="/login" class="btn btn-outline">Sign In</a>
+                    <a href="/signup" class="btn btn-primary">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+            <h1>Bias Detection & Debiasing System</h1>
+            <p>AI-powered detection and mitigation of social biases in Large Language Models</p>
+        </header>
+        
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="test">Run Bias Test</button>
+            <button class="nav-tab" data-tab="custom">Custom Prompt</button>
+            <button class="nav-tab" data-tab="train">Model Training</button>
+            <button class="nav-tab" data-tab="equilens">EquiLens Training</button>
+        </div>
+        
+        <!-- Tab: Run Bias Test -->
+        <div class="tab-content active" id="tab-test">
+            <div class="grid">
+                <div class="card">
+                    <h2>Configuration</h2>
+                    <form id="testForm">
+                        <div class="form-group">
+                            <label>Dataset</label>
+                            <select id="datasetSelect">
+                                <option value="equilens">EquiLens Gender Bias Dataset (15,552 samples)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>LLM Provider</label>
+                            <select id="provider">
+                                <option value="openai">OpenAI (GPT-3.5)</option>
+                                <option value="gemini">Google Gemini</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Category (Profession)</label>
+                            <select id="category">
+                                <option value="">All Professions</option>
+                                <option value="engineer">Engineer</option>
+                                <option value="doctor">Doctor</option>
+                                <option value="nurse">Nurse</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="scientist">Scientist</option>
+                                <option value="programmer">Programmer</option>
+                                <option value="lawyer">Lawyer</option>
+                                <option value="manager">Manager</option>
+                                <option value="CEO">CEO</option>
+                                <option value="artist">Artist</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Debiasing Methods</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="method_baseline" name="methods" value="baseline" checked>
+                                    <label for="method_baseline">Baseline</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="method_explanation" name="methods" value="explanation" checked>
+                                    <label for="method_explanation">Explanation</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="method_reprompting" name="methods" value="reprompting" checked>
+                                    <label for="method_reprompting">Reprompting</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="method_cot" name="methods" value="chain_of_thought">
+                                    <label for="method_cot">Chain-of-Thought</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="method_role" name="methods" value="role_play">
+                                    <label for="method_role">Role-Play</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full" id="runBtn">Run Bias Test</button>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <h2>Statistics</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="value" id="totalTests">0</div>
+                            <div class="label">Total Tests</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="value" id="biasedCount">0</div>
+                            <div class="label">Biased</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="value" id="biasRate">0%</div>
+                            <div class="label">Bias Rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="value" id="accuracy">0%</div>
+                            <div class="label">Accuracy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" id="loadingSection" style="display:none;">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 16px; color: var(--color-text-secondary);">Running bias tests... This may take a few minutes.</p>
+                </div>
+            </div>
+            
+            <div class="card results-section" id="resultsSection" style="display:none;">
+                <h2>Test Results</h2>
+                <div id="resultsContent"></div>
+            </div>
+            
+            <div class="card results-section" id="methodResultsSection" style="display:none;">
+                <h2>Method Comparison</h2>
+                <div id="methodResults"></div>
+            </div>
+            
+            <div class="card">
+                <h2>Previous Experiments</h2>
+                <table>
+                    <thead><tr><th>ID</th><th>Name</th><th>Status</th><th>Results</th><th>Created</th></tr></thead>
+                    <tbody id="experimentsBody">
+                        <tr><td colspan="5" class="empty-state">No experiments yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Tab: Custom Prompt -->
+        <div class="tab-content" id="tab-custom">
+            <div class="card">
+                <h2>Custom Prompt Testing</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: 16px;">Enter your own prompt to test for bias and get debiased responses</p>
+                <form id="customPromptForm">
+                    <div class="form-group">
+                        <label>Your Prompt / Question</label>
+                        <textarea id="customPrompt" rows="4" placeholder="Enter your prompt here..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>LLM Provider</label>
+                        <select id="customProvider">
+                            <option value="openai">OpenAI (GPT-3.5)</option>
+                            <option value="gemini">Google Gemini</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Trained Model (Optional)</label>
+                        <select id="customModel">
+                            <option value="">Default Parameters</option>
+                        </select>
+                        <p style="font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 4px;">Select a model trained on EquiLens dataset for optimized bias detection</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Debiasing Method</label>
+                        <select id="customMethod">
+                            <option value="baseline">Baseline (No Debiasing)</option>
+                            <option value="explanation">Explanation-Based Debiasing</option>
+                            <option value="reprompting">Reprompting Debiasing</option>
+                            <option value="chain_of_thought">Chain-of-Thought</option>
+                            <option value="role_play">Role-Play Debiasing</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="runCustomBtn">Test Custom Prompt</button>
+                </form>
+                <div id="customLoadingSection" style="display:none; margin-top: 20px;">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 16px; color: var(--color-text-secondary);">Processing prompt... This may take a moment.</p>
+                    </div>
+                </div>
+                <div id="customResultSection" style="display:none; margin-top: 20px;">
+                    <h3>Result</h3>
+                    <div id="customResultContent"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab: Model Training -->
+        <div class="tab-content" id="tab-train">
+            <div class="card">
+                <h2>Model Training</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: 16px;">Train and optimize the model parameters using the <strong>EquiLens gender bias dataset</strong> (15,552 samples)</p>
+                <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 6px; padding: 12px; margin-bottom: 16px; font-size: 0.875rem;">
+                    <span style="color: #3fb950;">✓</span> Using EquiLens Dataset<br>
+                    <span style="color: var(--color-text-secondary);">Professions: Engineer, Doctor, Nurse, Teacher, Scientist, Programmer, Lawyer, Manager, CEO, Artist</span>
+                </div>
+                <form id="trainForm">
+                    <div class="form-group">
+                        <label>LLM Provider</label>
+                        <select id="trainProvider">
+                            <option value="openai">OpenAI (GPT-3.5)</option>
+                            <option value="gemini">Google Gemini</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Training Category (Profession)</label>
+                        <select id="trainCategory">
+                            <option value="">All Professions</option>
+                            <option value="engineer">Engineer</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="nurse">Nurse</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="scientist">Scientist</option>
+                            <option value="programmer">Programmer</option>
+                            <option value="lawyer">Lawyer</option>
+                            <option value="manager">Manager</option>
+                            <option value="CEO">CEO</option>
+                            <option value="artist">Artist</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Optimization Target</label>
+                        <select id="optimizeTarget">
+                            <option value="temperature">Temperature Parameter</option>
+                            <option value="all">All Parameters (Full Grid Search)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="trainBtn">Start Training</button>
+                </form>
+                <div id="trainLoadingSection" style="display:none; margin-top: 20px;">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 16px; color: var(--color-text-secondary);">Training model parameters...</p>
+                        <p style="margin-top: 8px; color: var(--color-text-secondary); font-size: 0.875rem;">Testing different temperature values to find optimal bias detection settings</p>
+                    </div>
+                </div>
+                <div id="trainResultSection" style="display:none; margin-top: 20px;">
+                    <h3>Training Results</h3>
+                    <div id="trainResultContent"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab: EquiLens Training -->
+        <div class="tab-content" id="tab-equilens">
+            <div class="card">
+                <h2 style="margin-bottom: 10px;">EquiLens Dataset Training</h2>
+                <p style="color: var(--color-text-secondary); margin-bottom: 16px;">Train bias detection model using the EquiLens gender bias corpus (15,552 samples)</p>
+                
+                <div id="equilensStats" style="margin-bottom: 20px; padding: 16px; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 6px;">
+                    <h4 style="color: var(--color-accent); margin-bottom: 10px;">Dataset Information</h4>
+                    <div id="equilensStatsContent">Loading dataset statistics...</div>
+                </div>
+                
+                <form id="equilensForm">
+                    <div class="form-group">
+                        <label>LLM Provider</label>
+                        <select id="equilensProvider">
+                            <option value="openai">OpenAI (GPT-3.5)</option>
+                            <option value="gemini">Google Gemini</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Training Mode</label>
+                        <select id="equilensMode">
+                            <option value="audit">Bias Audit (Test for Bias)</option>
+                            <option value="optimize">Parameter Optimization (Find Best Settings)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Sample Size</label>
+                        <select id="equilensSampleSize">
+                            <option value="25">25 pairs</option>
+                            <option value="50">50 pairs</option>
+                            <option value="100">100 pairs</option>
+                            <option value="250">250 pairs</option>
+                            <option value="500">500 pairs</option>
+                            <option value="1000">1000 pairs</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="equilensSaveModel" checked style="width: auto;">
+                        <label for="equilensSaveModel" style="margin: 0; font-weight: normal;">Save trained model</label>
+                    </div>
+                    
+                    <div class="form-group" id="equilensTempGroup" style="display:none;">
+                        <label>Temperature</label>
+                        <select id="equilensTemperature">
+                            <option value="0.1">0.1 (Low - More Consistent)</option>
+                            <option value="0.3">0.3</option>
+                            <option value="0.5" selected>0.5 (Balanced)</option>
+                            <option value="0.7">0.7</option>
+                            <option value="0.9">0.9 (High - More Creative)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full" id="equilensBtn">Start EquiLens Training</button>
+                </form>
+                
+                <div id="equilensLoadingSection" style="display:none; margin-top: 20px;">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 16px; color: var(--color-text-secondary);">Running EquiLens bias detection...</p>
+                        <p style="margin-top: 8px; color: var(--color-text-secondary); font-size: 0.875rem;">Testing male/female prompt pairs from the dataset</p>
+                    </div>
+                </div>
+                
+                <div id="equilensResultSection" style="display:none; margin-top: 20px;">
+                    <h3>EquiLens Training Results</h3>
+                    <div id="equilensResultContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab switching
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadExperiments();
+            loadTrainedModels();
+            loadEquilensStats();
+        });
+        
+        // Load trained models for custom prompt
+        async function loadTrainedModels() {
+            try {
+                const response = await fetch('/api/models');
+                const models = await response.json();
+                
+                const modelSelect = document.getElementById('customModel');
+                // Clear existing options except the first one
+                while (modelSelect && modelSelect.options.length > 1) {
+                    modelSelect.remove(1);
+                }
+                
+                if (models && models.length > 0) {
+                    models.forEach(function(model) {
+                        const option = document.createElement('option');
+                        option.value = model.name;
+                        const temp = model.parameters?.temperature || 'default';
+                        option.textContent = `${model.name} (temp: ${temp}) - ${model.created_at?.split('T')[0] || ''}`;
+                        modelSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading models:', error);
+            }
+        }
+        
+        async function loadExperiments() {
+            try {
+                const response = await fetch('/api/experiments');
+                const experiments = await response.json();
+                const tbody = document.getElementById('experimentsBody');
+                if (experiments.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No experiments yet</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = '';
+                experiments.forEach(exp => {
+                    let statusClass = 'primary';
+                    if (exp.status === 'completed') statusClass = 'success';
+                    else if (exp.status === 'running') statusClass = 'warning';
+                    else if (exp.status === 'failed') statusClass = 'danger';
+                    tbody.innerHTML += `<tr>
+                        <td>${exp.id}</td>
+                        <td>${exp.name}</td>
+                        <td><span class="badge badge-${statusClass}">${exp.status}</span></td>
+                        <td>${exp.results_count || 0}</td>
+                        <td>${new Date(exp.created_at).toLocaleString()}</td>
+                    </tr>`;
+                });
+            } catch (e) { console.error('Error:', e); }
+        }
+        
+        // Test Form
+        document.getElementById('testForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('runBtn');
+            const loading = document.getElementById('loadingSection');
+            const resultsSection = document.getElementById('resultsSection');
+            const methodResultsSection = document.getElementById('methodResultsSection');
+            
+            btn.disabled = true; btn.textContent = 'Running Tests...';
+            loading.style.display = 'block';
+            resultsSection.style.display = 'none';
+            methodResultsSection.style.display = 'none';
+            
+            const methods = Array.from(document.querySelectorAll('input[name="methods"]:checked')).map(c => c.value);
+            const data = {
+                provider: document.getElementById('provider').value,
+                category: document.getElementById('category').value,
+                dataset: document.getElementById('datasetSelect').value,
+                methods: methods
+            };
+            
+            try {
+                const response = await fetch('/run-test', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
+                const result = await response.json();
+                
+                loading.style.display = 'none';
+                resultsSection.style.display = 'block';
+                
+                const analysis = result.analysis;
+                
+                // Update statistics
+                document.getElementById('totalTests').textContent = analysis.total_tests || 0;
+                document.getElementById('biasedCount').textContent = analysis.biased_count || 0;
+                document.getElementById('biasRate').textContent = (analysis.bias_percentage || 0).toFixed(1) + '%';
+                document.getElementById('accuracy').textContent = ((analysis.not_biased_count / analysis.total_tests * 100) || 0).toFixed(1) + '%';
+                
+                // Show methods tested
+                let html = '<h3>Results by Method</h3>';
+                html += `<div class="method-card">
+                    <h4>Dataset: ${analysis.dataset || 'equilens'}</h4>
+                    <div class="result-row"><span>Total Tests:</span><strong>${analysis.total_tests}</strong></div>
+                    <div class="result-row"><span>Biased:</span><strong>${analysis.biased_count}</strong></div>
+                    <div class="result-row"><span>Not Biased:</span><strong>${analysis.not_biased_count}</strong></div>
+                    <div class="result-row"><span>Bias Percentage:</span><strong>${analysis.bias_percentage.toFixed(1)}%</strong></div>
+                    <div class="result-row"><span>Methods:</span><strong>${analysis.methods_tested?.join(', ') || 'N/A'}</strong></div>
+                </div>`;
+                
+                resultsSection.innerHTML = html;
+                loadExperiments();
+            } catch (error) { 
+                loading.style.display = 'none';
+                alert('Error running test: ' + error.message); 
+            }
+            finally { btn.disabled = false; btn.textContent = 'Run Bias Test'; }
+        });
+        
+        // Custom prompt testing
+        document.getElementById('customPromptForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('runCustomBtn');
+            const loading = document.getElementById('customLoadingSection');
+            const resultSection = document.getElementById('customResultSection');
+            
+            const prompt = document.getElementById('customPrompt').value.trim();
+            if (!prompt) {
+                alert('Please enter a prompt');
+                return;
+            }
+            
+            btn.disabled = true; btn.textContent = 'Processing...';
+            loading.style.display = 'block';
+            resultSection.style.display = 'none';
+            
+            const modelSelect = document.getElementById('customModel');
+            const selectedModel = modelSelect.value;
+            
+            try {
+                const response = await fetch('/test-custom-prompt', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        method: document.getElementById('customMethod').value,
+                        provider: document.getElementById('customProvider').value,
+                        model_name: selectedModel || null
+                    })
+                });
+                const result = await response.json();
+                
+                loading.style.display = 'none';
+                resultSection.style.display = 'block';
+                
+                const biasBadge = result.is_biased ? '<span class="badge badge-warning">Biased</span>' : '<span class="badge badge-success">Not Biased</span>';
+                const modelUsed = result.model_used || 'default';
+                
+                // Model parameters display
+                let modelParamsHtml = '';
+                if (result.model_info && result.model_info.parameters) {
+                    const params = result.model_info.parameters;
+                    modelParamsHtml = `<div class="result-row"><span>Temperature:</span><strong>${params.temperature || 'default'}</strong></div>`;
+                    if (params.max_tokens) modelParamsHtml += `<div class="result-row"><span>Max Tokens:</span><strong>${params.max_tokens}</strong></div>`;
+                    if (params.top_p) modelParamsHtml += `<div class="result-row"><span>Top P:</span><strong>${params.top_p}</strong></div>`;
+                }
+                
+                let html = `<div class="method-card">
+                    <h4>Bias Detection Result</h4>
+                    <div class="result-row"><span>Biased:</span><strong>${biasBadge}</strong></div>
+                    <div class="result-row"><span>Bias Score:</span><strong>${result.bias_score.toFixed(4)}</strong></div>
+                    <div class="result-row"><span>Method Used:</span><strong>${result.method}</strong></div>
+                    <div class="result-row"><span>Model Used:</span><strong>${modelUsed}</strong></div>
+                    ${modelParamsHtml}
+                </div>`;
+                
+                // Add summary
+                if (result.summary) {
+                    html += `<div class="method-card" style="background: var(--color-bg-secondary);">
+                        <h4>Summary</h4>
+                        <p style="margin-top: 10px; color: var(--color-text-primary);">${result.summary}</p>
+                    </div>`;
+                }
+                
+                html += `<div class="method-card">
+                    <h4>Original Response</h4>
+                    <p style="margin-top: 10px; white-space: pre-wrap; color: var(--color-text-primary);">${result.original_response}</p>
+                </div>`;
+                
+                if (result.debiased_response && result.method !== 'baseline') {
+                    html += `<div class="method-card">
+                        <h4>Debiased Response</h4>
+                        <p style="margin-top: 10px; white-space: pre-wrap; color: var(--color-text-primary);">${result.debiased_response}</p>
+                    </div>`;
+                }
+                
+                document.getElementById('customResultContent').innerHTML = html;
+            } catch (error) {
+                loading.style.display = 'none';
+                alert('Error testing prompt: ' + error.message);
+            }
+            finally { btn.disabled = false; btn.textContent = 'Test Custom Prompt'; }
+        });
+        
+        // Model training
+        document.getElementById('trainForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('trainBtn');
+            const loading = document.getElementById('trainLoadingSection');
+            const resultSection = document.getElementById('trainResultSection');
+            
+            btn.disabled = true; btn.textContent = 'Training...';
+            loading.style.display = 'block';
+            resultSection.style.display = 'none';
+            
+            try {
+                const response = await fetch('/train-model', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({
+                        category: document.getElementById('trainCategory').value,
+                        optimize_target: document.getElementById('optimizeTarget').value,
+                        provider: document.getElementById('trainProvider').value
+                    })
+                });
+                const result = await response.json();
+                
+                loading.style.display = 'none';
+                resultSection.style.display = 'block';
+                
+                let html = '';
+                
+                // Show prompts being tested
+                if (result.prompts_tested && result.prompts_tested.length > 0) {
+                    html += '<div class="method-card"><h4>Prompts Being Tested (' + result.prompt_count + ')</h4>';
+                    html += '<div style="max-height: 200px; overflow-y: auto; margin-top: 10px;">';
+                    result.prompts_tested.forEach(function(p, idx) {
+                        html += '<div style="padding: 8px; border-bottom: 1px solid var(--color-border); font-size: 0.85rem;">';
+                        html += '<span class="badge badge-primary">' + p.category + '</span> ';
+                        html += '<span class="badge badge-warning">' + p.target + '</span> ';
+                        html += '<span style="color: var(--color-text-secondary);">' + p.question + '</span>';
+                        html += '</div>';
+                    });
+                    html += '</div></div>';
+                }
+                
+                html += '<div class="method-card"><h4>Optimization Results</h4>';
+                
+                if (result.optimal_settings) {
+                    if (result.optimal_settings.temperature !== undefined) {
+                        html += '<div class="result-row"><span>Best Temperature:</span><strong>' + result.optimal_settings.temperature + '</strong></div>';
+                    }
+                    if (result.optimal_settings.bias_score !== undefined) {
+                        html += '<div class="result-row"><span>Best Bias Score:</span><strong>' + result.optimal_settings.bias_score.toFixed(4) + '</strong></div>';
+                    }
+                }
+                
+                // Show detailed results for each temperature tested
+                if (result.detailed_results && result.detailed_results.length > 0) {
+                    html += '<div style="margin-top: 15px;"><strong>All Temperature Results:</strong></div>';
+                    html += '<table style="margin-top: 10px; font-size: 0.85rem;">';
+                    html += '<tr><th>Temperature</th><th>Bias Score</th><th>Accuracy</th><th>Tests</th></tr>';
+                    result.detailed_results.forEach(function(r) {
+                        html += '<tr>';
+                        html += '<td>' + r.temperature + '</td>';
+                        html += '<td>' + (r.bias_score ? r.bias_score.toFixed(4) : 'N/A') + '</td>';
+                        html += '<td>' + (r.accuracy ? (r.accuracy * 100).toFixed(1) + '%' : 'N/A') + '</td>';
+                        html += '<td>' + r.total_tests + '</td>';
+                        html += '</tr>';
+                    });
+                    html += '</table>';
+                }
+                
+                if (result.recommendations) {
+                    html += '<div style="margin-top: 15px;"><strong>Recommendations:</strong></div>';
+                    html += '<pre style="background: var(--color-bg); padding: 16px; border-radius: 6px; margin-top: 10px; white-space: pre-wrap; font-size: 0.875rem; color: var(--color-text-primary); border: 1px solid var(--color-border);">' + result.recommendations + '</pre>';
+                }
+                
+                html += '</div>';
+                document.getElementById('trainResultContent').innerHTML = html;
+            } catch (error) {
+                loading.style.display = 'none';
+                alert('Error training model: ' + error.message);
+            }
+            finally { btn.disabled = false; btn.textContent = 'Start Training'; }
+        });
+        
+        // Load EquiLens dataset stats on page load
+        async function loadEquilensStats() {
+            try {
+                const response = await fetch('/equilens-stats');
+                const stats = await response.json();
+                
+                let html = '<div class="result-row"><span>Total Samples:</span><strong>' + stats.total_samples + '</strong></div>';
+                html += '<div class="result-row"><span>Professions:</span><strong>' + stats.professions.length + '</strong></div>';
+                html += '<div class="result-row"><span>Traits:</span><strong>' + stats.traits.length + '</strong></div>';
+                html += '<div class="result-row"><span>Name Categories:</span><strong>' + stats.name_categories.join(', ') + '</strong></div>';
+                html += '<div class="result-row"><span>Trait Categories:</span><strong>' + stats.trait_categories.join(', ') + '</strong></div>';
+                
+                document.getElementById('equilensStatsContent').innerHTML = html;
+            } catch (error) {
+                document.getElementById('equilensStatsContent').innerHTML = 'Error loading dataset statistics';
+            }
+        }
+        
+        // Show/hide temperature based on mode
+        document.getElementById('equilensMode').addEventListener('change', function() {
+            const tempGroup = document.getElementById('equilensTempGroup');
+            if (this.value === 'audit') {
+                tempGroup.style.display = 'block';
+            } else {
+                tempGroup.style.display = 'none';
+            }
+        });
+        
+        // EquiLens training form
+        document.getElementById('equilensForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('equilensBtn');
+            const loading = document.getElementById('equilensLoadingSection');
+            const resultSection = document.getElementById('equilensResultSection');
+            
+            btn.disabled = true; btn.textContent = 'Training...';
+            loading.style.display = 'block';
+            resultSection.style.display = 'none';
+            
+            try {
+                const response = await fetch('/train-equilens', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({
+                        provider: document.getElementById('equilensProvider').value,
+                        train_mode: document.getElementById('equilensMode').value,
+                        sample_size: parseInt(document.getElementById('equilensSampleSize').value),
+                        temperature: parseFloat(document.getElementById('equilensTemperature').value),
+                        save_model: document.getElementById('equilensSaveModel').checked
+                    })
+                });
+                const result = await response.json();
+                
+                loading.style.display = 'none';
+                resultSection.style.display = 'block';
+                
+                let html = '';
+                
+                if (result.mode === 'audit') {
+                    // Show audit results
+                    const audit = result.audit_results;
+                    html += '<div class="method-card"><h4>Bias Audit Summary</h4>';
+                    html += '<div class="result-row"><span>Total Pairs Tested:</span><strong>' + audit.total_pairs + '</strong></div>';
+                    html += '<div class="result-row"><span>Bias Detected:</span><strong style="color: ' + (audit.bias_percentage > 50 ? '#f85149' : '#3fb950') + ';">' + audit.bias_detected + '</strong></div>';
+                    html += '<div class="result-row"><span>No Bias:</span><strong>' + audit.no_bias + '</strong></div>';
+                    html += '<div class="result-row"><span>Bias Percentage:</span><strong>' + audit.bias_percentage.toFixed(1) + '%</strong></div>';
+                    html += '<div class="result-row"><span>Average Bias Score:</span><strong>' + (audit.average_bias_score || 0).toFixed(4) + '</strong></div>';
+                    html += '<div class="result-row"><span>Temperature:</span><strong>' + audit.temperature + '</strong></div>';
+                    html += '</div>';
+                    
+                    // Show detailed results
+                    if (audit.details && audit.details.length > 0) {
+                        html += '<div class="method-card" style="margin-top: 15px;"><h4>Sample Results (First 10)</h4>';
+                        html += '<table style="font-size: 0.8rem;">';
+                        html += '<tr><th>Profession</th><th>Trait</th><th>Male Name</th><th>Female Name</th><th>Bias</th></tr>';
+                        audit.details.forEach(function(d) {
+                            html += '<tr>';
+                            html += '<td>' + d.profession + '</td>';
+                            html += '<td>' + d.trait + '</td>';
+                            html += '<td>' + d.male_name + '</td>';
+                            html += '<td>' + d.female_name + '</td>';
+                            html += '<td><span class="badge ' + (d.is_biased ? 'badge-danger' : 'badge-success') + '">' + (d.is_biased ? 'Yes' : 'No') + '</span></td>';
+                            html += '</tr>';
+                        });
+                        html += '</table></div>';
+                    }
+                } else {
+                    // Show optimization results
+                    html += '<div class="method-card"><h4>Parameter Optimization Results</h4>';
+                    html += '<div class="result-row"><span>Optimal Temperature:</span><strong>' + result.optimal_temperature + '</strong></div>';
+                    html += '</div>';
+                    
+                    // Show temperature comparison
+                    html += '<div class="method-card" style="margin-top: 15px;"><h4>Temperature Comparison</h4>';
+                    html += '<table style="font-size: 0.85rem;">';
+                    html += '<tr><th>Temperature</th><th>25 Samples</th><th>50 Samples</th></tr>';
+                    for (const [temp, results] of Object.entries(result.temperature_results)) {
+                        const tempVal = temp.replace('temp_', '');
+                        const r25 = results.find(r => r.sample_size === 25);
+                        const r50 = results.find(r => r.sample_size === 50);
+                        html += '<tr>';
+                        html += '<td>' + tempVal + '</td>';
+                        html += '<td>' + (r25 ? r25.bias_percentage.toFixed(1) + '%' : 'N/A') + '</td>';
+                        html += '<td>' + (r50 ? r50.bias_percentage.toFixed(1) + '%' : 'N/A') + '</td>';
+                        html += '</tr>';
+                    }
+                    html += '</table></div>';
+                }
+                
+                document.getElementById('equilensResultContent').innerHTML = html;
+            } catch (error) {
+                loading.style.display = 'none';
+                alert('Error training model: ' + error.message);
+            }
+            finally { btn.disabled = false; btn.textContent = 'Start EquiLens Training'; }
+        });
+        
+        // Load stats on page load
+        loadEquilensStats();
+    </script>
+</body>
+</html>

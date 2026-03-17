@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up - Bias Detection System</title>
+    <style>
+        :root {
+            --color-bg: #0d1117;
+            --color-bg-secondary: #161b22;
+            --color-border: #30363d;
+            --color-text-primary: #c9d1d9;
+            --color-text-secondary: #8b949e;
+            --color-accent: #58a6ff;
+            --color-success: #238636;
+            --color-success-hover: #2ea043;
+            --color-danger: #da3633;
+            --color-btn-primary: #238636;
+            --color-btn-secondary: #21262d;
+            --color-btn-hover: #30363d;
+            --color-link: #58a6ff;
+            --color-input-bg: #0d1117;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            width: 100%;
+            max-width: 380px;
+            padding: 32px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+            font-weight: 300;
+        }
+        
+        .header p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+        }
+        
+        .form-container {
+            margin-top: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--color-text-primary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .form-group label .required {
+            color: var(--color-danger);
+            margin-left: 2px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: var(--color-input-bg);
+            color: var(--color-text-primary);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+        }
+        
+        .form-group input::placeholder {
+            color: var(--color-text-secondary);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+            margin-top: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--color-success);
+            color: white;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-success-hover);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .links {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--color-border);
+            font-size: 14px;
+        }
+        
+        .links a {
+            color: var(--color-link);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        
+        .links a:hover {
+            color: var(--color-accent);
+            text-decoration: underline;
+        }
+        
+        .flash-messages {
+            margin-bottom: 16px;
+        }
+        
+        .flash {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            border: 1px solid transparent;
+        }
+        
+        .flash.error {
+            background: rgba(218, 54, 51, 0.1);
+            color: #f85149;
+            border-color: rgba(218, 54, 51, 0.4);
+        }
+        
+        .flash.success {
+            background: rgba(35, 134, 54, 0.1);
+            color: #3fb950;
+            border-color: rgba(35, 134, 54, 0.4);
+        }
+        
+        .flash.info {
+            background: rgba(56, 139, 253, 0.1);
+            color: #58a6ff;
+            border-color: rgba(56, 139, 253, 0.4);
+        }
+        
+        .logo {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo svg {
+            width: 48px;
+            height: 48px;
+            color: var(--color-text-primary);
+        }
+        
+        .password-hint {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+        
+        .terms {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-top: 16px;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .terms a {
+            color: var(--color-link);
+            text-decoration: none;
+        }
+        
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+            </div>
+            <h1>Create account</h1>
+            <p>to start using Bias Detection</p>
+        </div>
+        
+        <div class="form-container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('signup') }}">
+                <div class="form-group">
+                    <label for="username">Username <span class="required">*</span></label>
+                    <input type="text" id="username" name="username" required 
+                           placeholder="Username"
+                           minlength="3" autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="Email address"
+                           autocomplete="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="full_name">Full name</label>
+                    <input type="text" id="full_name" name="full_name" 
+                           placeholder="Full name (optional)"
+                           autocomplete="name">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Password <span class="required">*</span></label>
+                        <input type="password" id="password" name="password" required 
+                               placeholder="Password"
+                               minlength="6" autocomplete="new-password">
+                        <div class="password-hint">Must be at least 6 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm <span class="required">*</span></label>
+                        <input type="password" id="confirm_password" name="confirm_password" required 
+                               placeholder="Confirm password"
+                               minlength="6" autocomplete="new-password">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Create account</button>
+                
+                <div class="terms">
+                    By creating an account, you agree to our Terms of Service and Privacy Policy.
+                </div>
+            </form>
+            
+            <div class="links">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+                <p style="margin-top: 12px;"><a href="{{ url_for('index') }}">← Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
